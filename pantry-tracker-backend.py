@@ -19,7 +19,7 @@ def health_check():
     return jsonify({"message": "Hello World!"})
 
 
-@app.route('/processImage', methods=['GET'])
+@app.route('/processImage', methods=['POST'])
 def get_data():
     data = request.get_json()
     image_base64 = data.get('image')
