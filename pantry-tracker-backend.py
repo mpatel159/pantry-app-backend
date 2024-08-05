@@ -38,7 +38,9 @@ def get_data():
     data = request.get_json()
     logger.info('data: ' + str(data))
     image_base64 = data.get('image')
+    base64_string = image_base64.split(',')[1]
     logger.info('img: ' + image_base64)
+    logger.info('img without ,: ' + base64_string)
     schema = load_json_schema('pantry_schema.json')
 
     with open(image_path, 'rb') as image_file:
@@ -56,7 +58,7 @@ def get_data():
                 {
                     "type": "image_url",
                     "image_url": {"url":
-                        f"data:image/jpeg;base64,{test_image_base64}"}
+                        f"data:image/jpeg;base64,{base64_string}"}
                 }
             ],
         }
@@ -65,7 +67,7 @@ def get_data():
 )
     logger.info(response.choices[0].message.content)
     json_data = json.loads(response.choices[0].message.content)
-    logger.info('js data: ' + json_data)
+    logger.info('js data: ' + str(json_data))
     return json_data
 
 if __name__ == '__main__':
