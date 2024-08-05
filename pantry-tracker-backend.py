@@ -53,7 +53,7 @@ def get_data():
         {
             "role": "user",
             "content": [
-                {"type": "text", "text": "provide JSON file that represents this document. Use this JSON Schema: " +
+                {"type": "text", "text": "Extract the properties from this image using the following JSON Schema as a guide: " +
                     json.dumps(schema)},
                 {
                     "type": "image_url",
