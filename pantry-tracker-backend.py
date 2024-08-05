@@ -5,6 +5,7 @@ import json
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import base64
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +18,12 @@ client = OpenAI()
 def load_json_schema(schema_file: str) -> dict:
     with open(schema_file, 'r') as file:
         return json.load(file)
+
+
+image_path = 'unnamed.jpg'
+
+
+
 
 
 @app.route('/health-check')
@@ -33,6 +40,10 @@ def get_data():
     image_base64 = data.get('image')
     logger.info('img: ' + image_base64)
     schema = load_json_schema('pantry_schema.json')
+
+    with open(image_path, 'rb') as image_file:
+        test_image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
+    logger.info('tst img; ' + test_image_base64)
     response = client.chat.completions.create(
     model='gpt-4o-mini',
     response_format={"type": "json_object"},
@@ -45,7 +56,7 @@ def get_data():
                 {
                     "type": "image_url",
                     "image_url": {"url":
-                        f"data:image/jpeg;base64,{image_base64}"}
+                        f"data:image/jpeg;base64,{test_image_base64}"}
                 }
             ],
         }
