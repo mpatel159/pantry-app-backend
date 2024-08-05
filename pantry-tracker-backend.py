@@ -34,7 +34,7 @@ def get_data():
     logger.info('img: ' + image_base64)
     schema = load_json_schema('pantry_schema.json')
     response = client.chat.completions.create(
-    model='gpt-4o',
+    model='gpt-4o-mini',
     response_format={"type": "json_object"},
     messages=[
         {
@@ -52,8 +52,9 @@ def get_data():
     ],
     max_tokens=500,
 )
-    print(response.choices[0].message.content)
+    logger.info(response.choices[0].message.content)
     json_data = json.loads(response.choices[0].message.content)
+    logger.info('js data: ' + json_data)
     return json_data
 
 if __name__ == '__main__':
