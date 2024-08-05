@@ -16,15 +16,18 @@ def load_json_schema(schema_file: str) -> dict:
 
 @app.route('/health-check')
 def health_check():
+    print('in health check')
     return jsonify({"message": "Hello World!"})
 
 
 @app.route('/processImage', methods=['POST'])
 def get_data():
+    print('in process image')
     data = request.get_json()
+    print('data: ' + str(data))
     image_base64 = data.get('image')
+    print('img: ' + image_base64)
     schema = load_json_schema('pantry_schema.json')
-    
     response = client.chat.completions.create(
     model='gpt-4o',
     response_format={"type": "json_object"},
