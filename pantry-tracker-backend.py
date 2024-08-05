@@ -1,10 +1,13 @@
 #app.py
+import logging
 from openai import OpenAI
 import json
 import os
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 client = OpenAI()
@@ -16,17 +19,17 @@ def load_json_schema(schema_file: str) -> dict:
 
 @app.route('/health-check')
 def health_check():
-    print('in health check')
+    logger.info("in health check")
     return jsonify({"message": "Hello World!"})
 
 
 @app.route('/processImage', methods=['POST'])
 def get_data():
-    print('in process image')
+    logger.info('in process image')
     data = request.get_json()
-    print('data: ' + str(data))
+    logger.info('data: ' + str(data))
     image_base64 = data.get('image')
-    print('img: ' + image_base64)
+    logger.info('img: ' + image_base64)
     schema = load_json_schema('pantry_schema.json')
     response = client.chat.completions.create(
     model='gpt-4o',
